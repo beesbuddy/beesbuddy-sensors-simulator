@@ -35,7 +35,7 @@ func (mod *mqttClientModule) Run() {
 
 			go func(topic string) {
 				for {
-					s := model.Sensor{
+					m := model.Metrics{
 						ClientId:    core.GetConfig().ClientId,
 						ApiaryId:    apiary.Id,
 						HiveId:      hive.Id,
@@ -43,8 +43,8 @@ func (mod *mqttClientModule) Run() {
 						Humidity:    fmt.Sprintf("%.2f", rand.Float64()*100),
 						Weight:      fmt.Sprintf("%d", rand.Intn(10000)),
 					}
-					j, _ := json.Marshal(s)
-					token := mod.client.Publish(topic, 0, false, j)
+					serializedMetrics, _ := json.Marshal(m)
+					token := mod.client.Publish(topic, 0, false, serializedMetrics)
 					token.Wait()
 					time.Sleep(time.Duration(core.GetConfig().UploadInterval) * time.Second)
 				}

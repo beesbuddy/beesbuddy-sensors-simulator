@@ -1,6 +1,6 @@
 package model
 
-type Sensor struct {
+type Metrics struct {
 	ClientId    string `json:"clientId"`
 	ApiaryId    string `json:"apiaryId"`
 	HiveId      string `json:"hiveId"`
