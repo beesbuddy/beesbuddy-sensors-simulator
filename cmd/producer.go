@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/models"
+	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/model"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
@@ -19,7 +19,7 @@ var defaultMessageHandler MQTT.MessageHandler = func(client MQTT.Client, msg MQT
 	fmt.Printf("MSG: %s\n", msg.Payload())
 }
 
-func RunProducers(appConfig models.AppConfig) {
+func RunProducers(appConfig model.AppConfig) {
 	opts := MQTT.NewClientOptions().AddBroker(appConfig.BrokerTCPUrl)
 	opts.SetClientID(appConfig.ClientId)
 	opts.SetDefaultPublishHandler(defaultMessageHandler)
@@ -38,7 +38,7 @@ func RunProducers(appConfig models.AppConfig) {
 
 			go func(topic string) {
 				for {
-					s := models.Sensor{
+					s := model.Sensor{
 						ClientId:    appConfig.ClientId,
 						ApiaryId:    apiary.Id,
 						HiveId:      hive.Id,
