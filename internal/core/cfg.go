@@ -5,12 +5,12 @@ import (
 	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/model"
 )
 
-var appConfig model.Config
+var cfg model.Config
 
 func GetConfig() model.Config {
-	return appConfig
+	return cfg
 }
 
 func InitializeConfig() {
-	appConfig = config.NewConfig[model.Config](0).Cfg
+	cfg = config.NewConfig[model.Config](0).Cfg
 }
