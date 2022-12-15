@@ -1,4 +1,4 @@
-package models
+package model
 
 type Sensor struct {
 	ClientId    string `json:"clientId"`

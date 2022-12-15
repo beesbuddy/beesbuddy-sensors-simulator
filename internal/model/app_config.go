@@ -1,4 +1,4 @@
-package models
+package model
 
 type Hive struct {
 	Id string `required:"true"`
