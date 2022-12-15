@@ -1,12 +1,29 @@
 package main
 
 import (
-	config "github.com/beesbuddy/beesbuddy-config"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/beesbuddy/beesbuddy-sensors-simulator/cmd"
-	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/model"
+	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal"
+	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/core"
+	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
 func main() {
-	appConfig := config.NewConfig[model.AppConfig](0).Cfg
-	cmd.RunProducers(appConfig)
+	core.InitializeConfig()
+	opts := MQTT.NewClientOptions().AddBroker(core.GetConfig().BrokerTCPUrl)
+	opts.SetClientID(core.GetConfig().ClientId)
+	opts.SetDefaultPublishHandler(internal.DefaultMessageHandler)
+	client := MQTT.NewClient(opts)
+	mqttClientRunner := cmd.NewMqttClientRunner(client)
+	mqttClientRunner.Run()
+
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)
+
+	<-interrupt
+
+	mqttClientRunner.CleanUp()
 }

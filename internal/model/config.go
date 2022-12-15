@@ -9,7 +9,7 @@ type Apiary struct {
 	Hives []Hive `required:"true"`
 }
 
-type AppConfig struct {
+type Config struct {
 	AppName                string   `required:"true"`
 	ClientId               string   `required:"true"`
 	BrokerTCPUrl           string   `requred:"true"`
