@@ -19,3 +19,7 @@ go.work
 ### Go Patch ###
 /vendor/
 /Godeps/
+
+dev.json
+prod.json
+test.json
