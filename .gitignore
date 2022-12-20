@@ -20,8 +20,12 @@ go.work
 /vendor/
 /Godeps/
 
+# Black list configuration
 dev.json
 prod.json
 prod.default.json
 test.json
 test.default.json
+
+# Blacklist air configuration
+dev.toml
