@@ -22,4 +22,6 @@ go.work
 
 dev.json
 prod.json
+prod.default.json
 test.json
+test.default.json
