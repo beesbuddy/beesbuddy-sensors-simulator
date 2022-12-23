@@ -1,5 +1,4 @@
 {
-    "AppName": "producer",
     "ClientId": "BeesBuddy-ClientId-4fd660b2",
     "BrokerTCPUrl": "tcp://mqtt.eclipseprojects.io:1883",
     "UploadInterval": 15,

@@ -28,7 +28,7 @@ func (mod *mqttClientModule) Run() {
 		panic(token.Error())
 	}
 
-	for _, apiary := range core.GetConfig().Apiaries {
+	for _, apiary := range core.GetCfgModel().Apiaries {
 		for _, hive := range apiary.Hives {
 			topic := fmt.Sprintf("apiary/%s/hive/%s", apiary.Id, hive.Id)
 			mod.topics = append(mod.topics, topic)
@@ -36,7 +36,7 @@ func (mod *mqttClientModule) Run() {
 			go func(topic string) {
 				for {
 					m := model.Metrics{
-						ClientId:    core.GetConfig().ClientId,
+						ClientId:    core.GetCfgModel().ClientId,
 						ApiaryId:    apiary.Id,
 						HiveId:      hive.Id,
 						Temperature: fmt.Sprintf("%.2f", rand.Float64()*100),
@@ -46,21 +46,21 @@ func (mod *mqttClientModule) Run() {
 					serializedMetrics, _ := json.Marshal(m)
 					token := mod.client.Publish(topic, 0, false, serializedMetrics)
 					token.Wait()
-					time.Sleep(time.Duration(core.GetConfig().UploadInterval) * time.Second)
+					time.Sleep(time.Duration(core.GetCfgModel().UploadInterval) * time.Second)
 				}
 			}(topic)
 
-			if core.GetConfig().Debug {
+			if core.GetCfgModel().Debug {
 				subscribe(mod.client, topic)
 			}
 
-			time.Sleep(time.Duration(core.GetConfig().InitializationInterval) * time.Second)
+			time.Sleep(time.Duration(core.GetCfgModel().InitializationInterval) * time.Second)
 		}
 	}
 }
 
 func (mod *mqttClientModule) CleanUp() {
-	if core.GetConfig().Debug {
+	if core.GetCfgModel().Debug {
 		for _, topic := range mod.topics {
 			unsubscribe(mod.client, topic)
 		}
