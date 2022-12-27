@@ -1,20 +1,20 @@
 package model
 
 type Hive struct {
-	Id string `required:"true"`
+	Id string `validate:"required"`
 }
 
 type Apiary struct {
-	Id    string `required:"true"`
-	Hives []Hive `required:"true"`
+	Id    string `validate:"required"`
+	Hives []Hive `validate:"required"`
 }
 
 type Config struct {
-	AppName                string   `required:"true"`
-	ClientId               string   `required:"true"`
-	BrokerTCPUrl           string   `requred:"true"`
+	AppName                string   `validate:"required"`
+	ClientId               string   `validate:"required"`
+	BrokerTCPUrl           string   `validate:"required"`
 	UploadInterval         int      `default:"15"`
 	InitializationInterval int      `default:"3"`
-	Apiaries               []Apiary `required:"true"`
+	Apiaries               []Apiary `validate:"required"`
 	Debug                  bool     `default:"false"`
 }
