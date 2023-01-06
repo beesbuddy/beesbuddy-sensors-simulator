@@ -12,9 +12,8 @@ import (
 )
 
 func main() {
-	core.InitializeConfig()
-	opts := MQTT.NewClientOptions().AddBroker(core.GetCfgModel().BrokerTCPUrl)
-	opts.SetClientID(core.GetCfgModel().ClientId)
+	opts := MQTT.NewClientOptions().AddBroker(core.GetCfg().BrokerTCPUrl)
+	opts.SetClientID(core.GetCfg().ClientId)
 	opts.SetDefaultPublishHandler(internal.DefaultMessageHandler)
 	client := MQTT.NewClient(opts)
 	mqttClientRunner := cmd.ProducerRunner(client)

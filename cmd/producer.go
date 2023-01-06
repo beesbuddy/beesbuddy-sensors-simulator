@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"os"
 	"time"
@@ -28,7 +29,7 @@ func (cmd *producerCmd) Run() {
 		panic(token.Error())
 	}
 
-	for _, apiary := range core.GetCfgModel().Apiaries {
+	for _, apiary := range core.GetCfg().Apiaries {
 		for _, hive := range apiary.Hives {
 			topic := fmt.Sprintf("apiary/%s/hive/%s", apiary.Id, hive.Id)
 			cmd.topics = append(cmd.topics, topic)
@@ -36,7 +37,7 @@ func (cmd *producerCmd) Run() {
 			go func(topic string) {
 				for {
 					m := models.Metrics{
-						ClientId:    core.GetCfgModel().ClientId,
+						ClientId:    core.GetCfg().ClientId,
 						ApiaryId:    apiary.Id,
 						HiveId:      hive.Id,
 						Temperature: fmt.Sprintf("%.2f", rand.Float64()*100),
@@ -44,23 +45,28 @@ func (cmd *producerCmd) Run() {
 						Weight:      fmt.Sprintf("%d", rand.Intn(10000)),
 					}
 					serializedMetrics, _ := json.Marshal(m)
+
+					if !core.GetCfg().Debug {
+						log.Println("Publishing to topic:", topic, ", metrics: ", m)
+					}
+
 					token := cmd.client.Publish(topic, 0, false, serializedMetrics)
 					token.Wait()
-					time.Sleep(time.Duration(core.GetCfgModel().UploadInterval) * time.Second)
+					time.Sleep(time.Duration(core.GetCfg().UploadInterval) * time.Second)
 				}
 			}(topic)
 
-			if core.GetCfgModel().Debug {
+			if core.GetCfg().Debug {
 				subscribe(cmd.client, topic)
 			}
 
-			time.Sleep(time.Duration(core.GetCfgModel().InitializationInterval) * time.Second)
+			time.Sleep(time.Duration(core.GetCfg().InitializationInterval) * time.Second)
 		}
 	}
 }
 
 func (cmd *producerCmd) CleanUp() {
-	if core.GetCfgModel().Debug {
+	if core.GetCfg().Debug {
 		for _, topic := range cmd.topics {
 			unsubscribe(cmd.client, topic)
 		}
