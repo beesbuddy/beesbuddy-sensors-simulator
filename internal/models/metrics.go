@@ -1,4 +1,4 @@
-package model
+package models
 
 type Metrics struct {
 	ClientId    string `json:"clientId"`

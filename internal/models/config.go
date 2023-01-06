@@ -1,4 +1,4 @@
-package model
+package models
 
 type Hive struct {
 	Id string `validate:"required"`

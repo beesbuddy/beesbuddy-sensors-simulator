@@ -17,7 +17,7 @@ func main() {
 	opts.SetClientID(core.GetCfgModel().ClientId)
 	opts.SetDefaultPublishHandler(internal.DefaultMessageHandler)
 	client := MQTT.NewClient(opts)
-	mqttClientRunner := cmd.NewMqttClientRunner(client)
+	mqttClientRunner := cmd.ProducerRunner(client)
 	mqttClientRunner.Run()
 
 	interrupt := make(chan os.Signal, 1)

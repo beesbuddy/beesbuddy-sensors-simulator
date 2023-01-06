@@ -1,6 +1,6 @@
 package core
 
-type ModuleRunner interface {
+type CmdRunner interface {
 	Run()
 	CleanUp()
 }

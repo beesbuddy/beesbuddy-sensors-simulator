@@ -8,34 +8,34 @@ import (
 	"time"
 
 	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/core"
-	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/model"
+	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/models"
 
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
-type mqttClientModule struct {
+type producerCmd struct {
 	client MQTT.Client
 	topics []string
 }
 
-func NewMqttClientRunner(client MQTT.Client) core.ModuleRunner {
-	module := &mqttClientModule{client: client, topics: []string{}}
+func ProducerRunner(client MQTT.Client) core.CmdRunner {
+	module := &producerCmd{client: client, topics: []string{}}
 	return module
 }
 
-func (mod *mqttClientModule) Run() {
-	if token := mod.client.Connect(); token.Wait() && token.Error() != nil {
+func (cmd *producerCmd) Run() {
+	if token := cmd.client.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())
 	}
 
 	for _, apiary := range core.GetCfgModel().Apiaries {
 		for _, hive := range apiary.Hives {
 			topic := fmt.Sprintf("apiary/%s/hive/%s", apiary.Id, hive.Id)
-			mod.topics = append(mod.topics, topic)
+			cmd.topics = append(cmd.topics, topic)
 
 			go func(topic string) {
 				for {
-					m := model.Metrics{
+					m := models.Metrics{
 						ClientId:    core.GetCfgModel().ClientId,
 						ApiaryId:    apiary.Id,
 						HiveId:      hive.Id,
@@ -44,14 +44,14 @@ func (mod *mqttClientModule) Run() {
 						Weight:      fmt.Sprintf("%d", rand.Intn(10000)),
 					}
 					serializedMetrics, _ := json.Marshal(m)
-					token := mod.client.Publish(topic, 0, false, serializedMetrics)
+					token := cmd.client.Publish(topic, 0, false, serializedMetrics)
 					token.Wait()
 					time.Sleep(time.Duration(core.GetCfgModel().UploadInterval) * time.Second)
 				}
 			}(topic)
 
 			if core.GetCfgModel().Debug {
-				subscribe(mod.client, topic)
+				subscribe(cmd.client, topic)
 			}
 
 			time.Sleep(time.Duration(core.GetCfgModel().InitializationInterval) * time.Second)
@@ -59,14 +59,14 @@ func (mod *mqttClientModule) Run() {
 	}
 }
 
-func (mod *mqttClientModule) CleanUp() {
+func (cmd *producerCmd) CleanUp() {
 	if core.GetCfgModel().Debug {
-		for _, topic := range mod.topics {
-			unsubscribe(mod.client, topic)
+		for _, topic := range cmd.topics {
+			unsubscribe(cmd.client, topic)
 		}
 	}
 
-	mod.client.Disconnect(250)
+	cmd.client.Disconnect(250)
 }
 
 func unsubscribe(c MQTT.Client, topic string) {
