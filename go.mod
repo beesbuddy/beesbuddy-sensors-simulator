@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.2
-	github.com/leonidasdeim/goconfig v1.3.5
+	github.com/leonidasdeim/goconfig v1.4.0
 )
 
 require (
@@ -18,4 +18,5 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

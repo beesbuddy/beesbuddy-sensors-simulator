@@ -3,12 +3,14 @@ package core
 import (
 	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/models"
 	c "github.com/leonidasdeim/goconfig"
+	"github.com/leonidasdeim/goconfig/pkg/handler"
 )
 
 var cfgObject *c.Config[models.Config]
 
 func init() {
-	cfg, err := c.Init[models.Config](c.WithName("dev"))
+	h, _ := handler.New(handler.WithName("dev"))
+	cfg, err := c.Init[models.Config](h)
 
 	if err != nil {
 		panic("Unable to load config")
