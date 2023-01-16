@@ -1,0 +1,11 @@
+2023/01/16 23:42:41 Publishing to topic: apiary/1/hive/11 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 13 64.45 8.55 2002}
+2023/01/16 23:42:41 Publishing to topic: apiary/2/hive/23 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 23 62.27 36.97 2546}
+2023/01/16 23:42:44 Publishing to topic: apiary/1/hive/12 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 13 53.53 18.72 6503}
+2023/01/16 23:42:47 Publishing to topic: apiary/1/hive/13 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 13 62.81 12.68 2205}
+2023/01/16 23:42:50 Publishing to topic: apiary/2/hive/21 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 23 41.03 43.49 1351}
+2023/01/16 23:42:53 Publishing to topic: apiary/2/hive/22 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 23 55.01 62.36 3687}
+2023/01/16 23:42:56 Publishing to topic: apiary/1/hive/11 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 13 83.05 0.05 5285}
+2023/01/16 23:42:56 Publishing to topic: apiary/2/hive/23 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 23 40.00 49.79 3098}
+2023/01/16 23:42:59 Publishing to topic: apiary/1/hive/12 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 13 40.96 2.97 8582}
+2023/01/16 23:43:02 Publishing to topic: apiary/1/hive/13 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 13 0.28 91.58 9267}
+2023/01/16 23:43:05 Publishing to topic: apiary/2/hive/21 , metrics:  {BeesBuddy-ClientId-4fd660b2 2 23 55.94 81.54 5894}

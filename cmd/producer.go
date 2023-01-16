@@ -30,16 +30,18 @@ func (cmd *producerCmd) Run() {
 	}
 
 	for _, apiary := range core.GetCfg().Apiaries {
+		apiaryId := apiary.Id
 		for _, hive := range apiary.Hives {
 			topic := fmt.Sprintf("apiary/%s/hive/%s", apiary.Id, hive.Id)
 			cmd.topics = append(cmd.topics, topic)
+			hiveId := hive.Id
 
-			go func(topic string) {
+			go func(topic, apiaryId, hiveId string) {
 				for {
-					m := models.Metrics{
+					m := &models.Metrics{
 						ClientId:    core.GetCfg().ClientId,
-						ApiaryId:    apiary.Id,
-						HiveId:      hive.Id,
+						ApiaryId:    apiaryId,
+						HiveId:      hiveId,
 						Temperature: fmt.Sprintf("%.2f", rand.Float64()*100),
 						Humidity:    fmt.Sprintf("%.2f", rand.Float64()*100),
 						Weight:      fmt.Sprintf("%d", rand.Intn(10000)),
@@ -54,7 +56,7 @@ func (cmd *producerCmd) Run() {
 					token.Wait()
 					time.Sleep(time.Duration(core.GetCfg().UploadInterval) * time.Second)
 				}
-			}(topic)
+			}(topic, apiaryId, hiveId)
 
 			if core.GetCfg().Debug {
 				subscribe(cmd.client, topic)
