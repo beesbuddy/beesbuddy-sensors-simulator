@@ -9,7 +9,7 @@ import (
 var cfgObject *c.Config[models.Config]
 
 func init() {
-	h, _ := fh.New(handler.WithName("dev"))
+	h, _ := fh.New(fh.WithName("dev"))
 	cfg, err := c.Init[models.Config](h)
 
 	if err != nil {
