@@ -3,13 +3,13 @@ package core
 import (
 	"github.com/beesbuddy/beesbuddy-sensors-simulator/internal/models"
 	c "github.com/leonidasdeim/goconfig"
-	"github.com/leonidasdeim/goconfig/pkg/handler"
+	fh "github.com/leonidasdeim/goconfig/pkg/filehandler"
 )
 
 var cfgObject *c.Config[models.Config]
 
 func init() {
-	h, _ := handler.New(handler.WithName("dev"))
+	h, _ := fh.New(handler.WithName("dev"))
 	cfg, err := c.Init[models.Config](h)
 
 	if err != nil {
